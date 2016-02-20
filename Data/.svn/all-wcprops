@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/TwitterDataAnalytics/!svn/ver/66/trunk/FINAL/Data
+END
+ows.json
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/TwitterDataAnalytics/!svn/ver/66/trunk/FINAL/Data/ows.json
+END
+owshappy.json
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/TwitterDataAnalytics/!svn/ver/66/trunk/FINAL/Data/owshappy.json
+END
+owssad.json
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/TwitterDataAnalytics/!svn/ver/66/trunk/FINAL/Data/owssad.json
+END
+streaming.config
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/TwitterDataAnalytics/!svn/ver/65/trunk/FINAL/Data/streaming.config
+END
