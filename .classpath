@@ -69,5 +69,6 @@
 	<classpathentry kind="lib" path="TwitterDataAnalytics/TwitterDataAnalytics/lib/vecmath-1.3.1.jar"/>
 	<classpathentry kind="lib" path="TwitterDataAnalytics/TwitterDataAnalytics/lib/wstx-asl-3.2.6.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/LethalLima/git/SocialCast/TwitterDataAnalytics/TwitterDataAnalytics/lib/mongo-java-driver-3.2.2.jar"/>
 	<classpathentry kind="output" path="TwitterDataAnalytics/TwitterDataAnalytics/build/classes"/>
 </classpath>

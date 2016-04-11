@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
@@ -36,24 +37,29 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.bson.Document;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
 import utils.OAuthUtils;
 
 public class StreamingApiExample
 {
     OAuthTokenSecret OAuthToken;
-    final int RECORDS_TO_PROCESS = 10;
+    final int RECORDS_TO_PROCESS = 100;
     final int MAX_GEOBOXES = 25;
     final int MAX_KEYWORDS = 400;
     final int MAX_USERS = 5000;
     HashSet<String> Keywords;
     HashSet<String> Geoboxes;
     HashSet<String> Userids;
-    final String CONFIG_FILE_PATH = "C:/Users/Suro/Desktop/TwitterData/Data/streaming.config";
-    final String DEF_OUTPATH = "C:/Users/Suro/Desktop/TwitterData/Data/streaming/";
+    final String CONFIG_FILE_PATH = "/Users/LethalLima/git/SocialCast/Data/streaming.config";
+    final String DEF_OUTPATH = "/data/db/";
 
     /**
      * Loads the Twitter access token and secret for a user
@@ -143,41 +149,40 @@ public class StreamingApiExample
      */
     public void ProcessTwitterStream(InputStream is, String outFilePath)
     {
-        BufferedWriter bwrite = null;
-        try {
-            JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(is, "UTF-8"));
-            ArrayList<JSONObject> rawtweets = new ArrayList<JSONObject>();
-            int nooftweetsuploaded = 0;
-            while (true) {
-                try {                    
-                    JSONObject temp = new JSONObject(jsonTokener);                    
-                    rawtweets.add(temp);
-//                    System.out.println(temp);
-                    if (rawtweets.size() >= RECORDS_TO_PROCESS)
-                    {
-                        Calendar cal = Calendar.getInstance();
-                        String filename = outFilePath + "tweets_" + cal.getTimeInMillis() + ".json";
-                        bwrite = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "UTF-8"));
-                        nooftweetsuploaded += RECORDS_TO_PROCESS;
-                        //Write the collected tweets to a file
-                       // this is where the tweets are written to a file
-                        //need to figure out how to sort
-                        
-                        for (JSONObject jobj : rawtweets) {
-                            bwrite.write(jobj.toString());
-                            bwrite.newLine();
-                        }
-                        System.out.println("Written "+nooftweetsuploaded+" records so far");
-                        bwrite.close();
-                        rawtweets.clear();
-                    }
-                } catch (JSONException ex) {
-                    ex.printStackTrace();
-                }                
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } 
+    	try {
+	    	// connect to Mongo database
+	    	MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+	    	System.out.println("Connection to Mongo client successfully!");
+	    	// select a database
+	    	MongoDatabase db = mongoClient.getDatabase("test");
+	    	System.out.println("Connection to database successfully!");
+	    	MongoCollection<Document> collection = db.getCollection("test");
+	    	
+	    	try {
+	    		JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(is, "UTF-8"));
+	    		int i = 0;
+	    		while (i< RECORDS_TO_PROCESS) {
+	    			try {                    
+	    				JSONObject tweet = new JSONObject(jsonTokener);  
+	    				JSONObject user = (JSONObject)tweet.get("user");
+	    				String loc = new String(user.get("location").toString());
+	    				if (loc.equals("null")) 
+	    					continue;
+	                     collection.insertOne(Document.parse(tweet.toString()));
+	                     System.out.println("Written "+i+" records so far");
+	                } catch (JSONException ex) {
+	                     ex.printStackTrace();
+	                }
+	    			i++;   
+	    		}
+	    	} catch (IOException ex) {
+	             ex.printStackTrace();
+	    	}
+	         mongoClient.close();
+    	} catch(Exception e) {
+    		System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+    	}
+       
     }
 
     public static void main(String[] args)
