@@ -51,15 +51,15 @@ import utils.OAuthUtils;
 public class StreamingApiExample
 {
     OAuthTokenSecret OAuthToken;
-    final int RECORDS_TO_PROCESS = 100;
+    final int RECORDS_TO_PROCESS = 10;
     final int MAX_GEOBOXES = 25;
     final int MAX_KEYWORDS = 400;
     final int MAX_USERS = 5000;
     HashSet<String> Keywords;
     HashSet<String> Geoboxes;
     HashSet<String> Userids;
-    final String CONFIG_FILE_PATH = "/Users/LethalLima/git/SocialCast/Data/streaming.config";
-    final String DEF_OUTPATH = "/data/db/";
+    final String CONFIG_FILE_PATH = "C:\\Users\\LethalLima\\Documents\\SocialCast\\Data\\streaming.config";
+    final String DEF_OUTPATH = "\\data\\db";
 
     /**
      * Loads the Twitter access token and secret for a user
@@ -163,11 +163,16 @@ public class StreamingApiExample
 	    		int i = 0;
 	    		while (i< RECORDS_TO_PROCESS) {
 	    			try {                    
-	    				JSONObject tweet = new JSONObject(jsonTokener);  
-	    				JSONObject user = (JSONObject)tweet.get("user");
-	    				String loc = new String(user.get("location").toString());
-	    				if (loc.equals("null")) 
+	    				JSONObject tweet = new JSONObject(jsonTokener);
+//	    				JSONObject coordinates = (JSONObject)tweet.get("coordinates");
+	    				if(tweet.isNull("coordinates") && (tweet.isNull("place") || tweet.get("place").equals("")))
 	    					continue;
+	    				//System.out.println(coordinates);
+//	    				//if(coordinates.has("coordinates"))
+//	    					System.out.println(coordinates);
+//	    				Boolean hasGeo = new Boolean(user.get("geo_enabled").toString());
+//	    				if (hasGeo) 
+//	    					System.out.println(tweet);
 	                     collection.insertOne(Document.parse(tweet.toString()));
 	                     System.out.println("Written "+i+" records so far");
 	                } catch (JSONException ex) {
