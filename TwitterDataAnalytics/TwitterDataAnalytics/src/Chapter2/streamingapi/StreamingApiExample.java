@@ -167,7 +167,7 @@ public class StreamingApiExample
 //	    				JSONObject coordinates = (JSONObject)tweet.get("coordinates");
 	    				if(tweet.isNull("coordinates") && (tweet.isNull("place") || tweet.get("place").equals("")))
 	    					continue;
-	    				//System.out.println(coordinates);
+	    				System.out.println(tweet);
 //	    				//if(coordinates.has("coordinates"))
 //	    					System.out.println(coordinates);
 //	    				Boolean hasGeo = new Boolean(user.get("geo_enabled").toString());
