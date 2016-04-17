@@ -58,8 +58,8 @@ public class StreamingApiExample
     HashSet<String> Keywords;
     HashSet<String> Geoboxes;
     HashSet<String> Userids;
-    final String CONFIG_FILE_PATH = "C:\\Users\\LethalLima\\Documents\\SocialCast\\Data\\streaming.config";
-    final String DEF_OUTPATH = "\\data\\db";
+    final String CONFIG_FILE_PATH = "/Users/LethalLima/git/SocialCast/Data/streaming.config";
+    final String DEF_OUTPATH = "/data/db";
 
     /**
      * Loads the Twitter access token and secret for a user
@@ -160,36 +160,51 @@ public class StreamingApiExample
 	    	
 	    	try {
 	    		JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(is, "UTF-8"));
-	    		int i = 0;
-	    		while (i< RECORDS_TO_PROCESS) {
+	    		int i = 0, tweetCount = 0;
+	    		while (i < RECORDS_TO_PROCESS) {
 	    			try {                    
 	    				JSONObject tweet = new JSONObject(jsonTokener);
-//	    				JSONObject coordinates = (JSONObject)tweet.get("coordinates");
-	    				if(tweet.isNull("coordinates") && (tweet.isNull("place") || tweet.get("place").equals("")))
-	    					continue;
-	    				System.out.println(tweet);
-//	    				//if(coordinates.has("coordinates"))
-//	    					System.out.println(coordinates);
-//	    				Boolean hasGeo = new Boolean(user.get("geo_enabled").toString());
-//	    				if (hasGeo) 
-//	    					System.out.println(tweet);
-	                     collection.insertOne(Document.parse(tweet.toString()));
-	                     System.out.println("Written "+i+" records so far");
+	    				
+	    				// If tweet is useless, then retrieve a new one, else store tweet
+	    				if(isValidTweet(tweet)){
+	    					System.out.println(tweet);
+	    					collection.insertOne(Document.parse(tweet.toString()));
+	    					i++;
+		                    System.out.println("Written "+ ++i + " records so far");
+	    				}
 	                } catch (JSONException ex) {
 	                     ex.printStackTrace();
 	                }
-	    			i++;   
+	    			System.out.println("Interated through " + ++tweetCount + " tweet(s) so far");
 	    		}
 	    	} catch (IOException ex) {
 	             ex.printStackTrace();
 	    	}
 	         mongoClient.close();
+	         System.out.println("Connection to database closed!");
     	} catch(Exception e) {
     		System.err.println( e.getClass().getName() + ": " + e.getMessage() );
     	}
        
     }
 
+    public boolean isValidTweet(JSONObject tweet) throws JSONException{
+//    	if(tweet.isNull("coordinates") && (tweet.isNull("place") || tweet.get("place").equals("")))
+    	if(tweet.isNull("place") || tweet.get("place").equals(""))
+    		return false;
+  
+//    	JSONObject coordinatesParent = (JSONObject)tweet.get("coordinates");
+//    	Double latLng[] = getCoordinates(coordinatesParent);
+    	JSONObject place = (JSONObject)tweet.get("place");
+    	
+//    	return latLng[0] == null && !place.get("country_code").equals("US");
+    	return place.get("country_code").equals("US");
+    }
+    
+    public Double[] getCoordinates(JSONObject coordinatesParent) throws JSONException{
+		return !coordinatesParent.isNull("coordinates") ? (Double[])coordinatesParent.get("coordinates") : new Double[]{null};
+    	
+    }
     public static void main(String[] args)
     {
         StreamingApiExample sae = new StreamingApiExample();
