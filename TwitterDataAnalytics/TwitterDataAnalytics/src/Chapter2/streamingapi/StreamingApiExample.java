@@ -151,7 +151,7 @@ public class StreamingApiExample
     {
     	try {
 	    	// connect to Mongo database
-	    	MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+	    	MongoClient mongoClient = new MongoClient();
 	    	System.out.println("Connection to Mongo client successfully!");
 	    	// select a database
 	    	MongoDatabase db = mongoClient.getDatabase("test");
@@ -169,7 +169,6 @@ public class StreamingApiExample
 	    				if(isValidTweet(tweet)){
 	    					System.out.println(tweet);
 	    					collection.insertOne(Document.parse(tweet.toString()));
-	    					i++;
 		                    System.out.println("Written "+ ++i + " records so far");
 	    				}
 	                } catch (JSONException ex) {
