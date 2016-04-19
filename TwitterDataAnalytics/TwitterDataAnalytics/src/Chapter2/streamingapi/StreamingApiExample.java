@@ -151,12 +151,13 @@ public class StreamingApiExample
     {
     	try {
 	    	// connect to Mongo database
-	    	MongoClient mongoClient = new MongoClient();
+    		// before running code, ssh into remote mongo db
+	    	MongoClient mongoClient = new MongoClient("127.0.0.1:4321");
 	    	System.out.println("Connection to Mongo client successfully!");
 	    	// select a database
-	    	MongoDatabase db = mongoClient.getDatabase("test");
+	    	MongoDatabase db = mongoClient.getDatabase("tweetsDB");
 	    	System.out.println("Connection to database successfully!");
-	    	MongoCollection<Document> collection = db.getCollection("test");
+	    	MongoCollection<Document> collection = db.getCollection("tweets");
 	    	
 	    	try {
 	    		JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(is, "UTF-8"));
