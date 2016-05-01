@@ -51,14 +51,14 @@ import utils.OAuthUtils;
 public class StreamingApiExample
 {
     OAuthTokenSecret OAuthToken;
-    final int RECORDS_TO_PROCESS = 10;
+    final int RECORDS_TO_PROCESS = 100;
     final int MAX_GEOBOXES = 25;
     final int MAX_KEYWORDS = 400;
     final int MAX_USERS = 5000;
     HashSet<String> Keywords;
     HashSet<String> Geoboxes;
     HashSet<String> Userids;
-    final String CONFIG_FILE_PATH = "/Users/LethalLima/git/SocialCast/Data/streaming.config";
+    final String CONFIG_FILE_PATH = "/Users/LethalLima/git/SocialCast/Streaming Configs/streamingTrump.config";
     final String DEF_OUTPATH = "/data/db";
 
     /**
@@ -157,7 +157,7 @@ public class StreamingApiExample
 	    	// select a database
 	    	MongoDatabase db = mongoClient.getDatabase("tweetsDB");
 	    	System.out.println("Connection to database successfully!");
-	    	MongoCollection<Document> collection = db.getCollection("tweets");
+	    	MongoCollection<Document> collection = db.getCollection("kasich");
 	    	
 	    	try {
 	    		JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(is, "UTF-8"));
