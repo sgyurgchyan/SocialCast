@@ -190,7 +190,7 @@ public class StreamingApiExample
 
     public boolean isValidTweet(JSONObject tweet) throws JSONException{
 //    	if(tweet.isNull("coordinates") && (tweet.isNull("place") || tweet.get("place").equals("")))
-    	if(tweet.isNull("geo") && (tweet.isNull("place") || tweet.get("place").equals("")))
+    	if(tweet.isNull("geo") || tweet.isNull("place") || tweet.get("place").equals(""))
     		return false;
   
 //    	JSONObject coordinatesParent = (JSONObject)tweet.get("coordinates");
