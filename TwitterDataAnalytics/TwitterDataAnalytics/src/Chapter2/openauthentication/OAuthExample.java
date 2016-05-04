@@ -1,6 +1,3 @@
-/* TweetTracker. Copyright (c) Arizona Board of Regents on behalf of Arizona State University
- * @author shamanth
- */
 package Chapter2.openauthentication;
 
 import Chapter2.support.OAuthTokenSecret;

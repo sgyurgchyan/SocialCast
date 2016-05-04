@@ -1,4 +1,3 @@
-
 package Chapter2.streamingapi;
 
 import Chapter2.openauthentication.OAuthExample;

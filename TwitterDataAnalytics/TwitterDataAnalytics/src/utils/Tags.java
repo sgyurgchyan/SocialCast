@@ -1,14 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package utils;
 
-/**
- *
- * @author skumar34
- */
 public class Tags implements Comparable{
     public String key;
     public double value;
