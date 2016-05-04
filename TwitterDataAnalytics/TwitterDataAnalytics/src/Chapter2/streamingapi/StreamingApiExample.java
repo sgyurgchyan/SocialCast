@@ -51,15 +51,16 @@ import utils.OAuthUtils;
 public class StreamingApiExample
 {
     OAuthTokenSecret OAuthToken;
-    final int RECORDS_TO_PROCESS = 100;
+    final int RECORDS_TO_PROCESS = 1000;
     final int MAX_GEOBOXES = 25;
     final int MAX_KEYWORDS = 400;
     final int MAX_USERS = 5000;
     HashSet<String> Keywords;
     HashSet<String> Geoboxes;
     HashSet<String> Userids;
-    final String CONFIG_FILE_PATH = "/Users/LethalLima/git/SocialCast/Streaming Configs/streamingTrump.config";
+    final String CONFIG_FILE_PATH = "/Users/LethalLima/git/SocialCast/Streaming Configs/defaultstreaming.config";
     final String DEF_OUTPATH = "/data/db";
+    final String COLLECTION = "tweets";
 
     /**
      * Loads the Twitter access token and secret for a user
@@ -157,7 +158,7 @@ public class StreamingApiExample
 	    	// select a database
 	    	MongoDatabase db = mongoClient.getDatabase("tweetsDB");
 	    	System.out.println("Connection to database successfully!");
-	    	MongoCollection<Document> collection = db.getCollection("kasich");
+	    	MongoCollection<Document> collection = db.getCollection(COLLECTION);
 	    	
 	    	try {
 	    		JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(is, "UTF-8"));
@@ -190,7 +191,7 @@ public class StreamingApiExample
 
     public boolean isValidTweet(JSONObject tweet) throws JSONException{
 //    	if(tweet.isNull("coordinates") && (tweet.isNull("place") || tweet.get("place").equals("")))
-    	if(tweet.isNull("place") || tweet.get("place").equals(""))
+    	if(tweet.isNull("geo") && (tweet.isNull("place") || tweet.get("place").equals("")))
     		return false;
   
 //    	JSONObject coordinatesParent = (JSONObject)tweet.get("coordinates");

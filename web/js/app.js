@@ -3,22 +3,22 @@
 	/* UI Components */
 
 	var isRunning = true;
-	var button = document.getElementById('toggle');
+	// var button = document.getElementById('toggle');
 
-	button.addEventListener('click', function(e){
-		if(isRunning) {
-			pubnub.unsubscribe({
-				channel: channel
-			});
-			button.value = 'Stream again';
-			isRunning = false;
-		} else {
-			getData();
-			button.value = 'Stop me!';
-			isRunning = true;
-		}
+	// button.addEventListener('click', function(e){
+	// 	if(isRunning) {
+	// 		pubnub.unsubscribe({
+	// 			channel: channel
+	// 		});
+	// 		button.value = 'Stream again';
+	// 		isRunning = false;
+	// 	} else {
+	// 		getData();
+	// 		button.value = 'Stop me!';
+	// 		isRunning = true;
+	// 	}
 		
-	}, false);
+	// }, false);
 
 
 	/* Emotional Data */
@@ -154,6 +154,8 @@
 	}
 
 	function getStreamData() {
+
+		console.log("getStreamData");
 		pubnub.subscribe({
 			channel: channel,
 			callback: processData
