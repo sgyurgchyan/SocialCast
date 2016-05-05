@@ -41,7 +41,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.bson.Document;
+
+import com.mongodb.Block;
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
@@ -158,7 +161,13 @@ public class StreamingApiExample
 	    	MongoDatabase db = mongoClient.getDatabase("tweetsDB");
 	    	System.out.println("Connection to database successfully!");
 	    	MongoCollection<Document> collection = db.getCollection(COLLECTION);
-	    	
+//	    	FindIterable<Document> iterable = collection.find();
+//	    	iterable.forEach(new Block<Document>() {
+//	    	    @Override
+//	    	    public void apply(final Document document) {
+//	    	        System.out.println(document);
+//	    	    }
+//	    	});
 	    	try {
 	    		JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(is, "UTF-8"));
 	    		int i = 0, tweetCount = 0;
